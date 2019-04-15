@@ -13,11 +13,10 @@ import java.util.Date;
 
 public class mydatabase extends SQLiteOpenHelper {
 
-    static final private String Db_name = "date_value.db";
-    static final private String Db_table = "d_val";
+    static final private String Db_name = "date_value_database.db";
+    static final private String Db_table = "date_val";
     static final private int Db_Version = 1;
 
-    public static final String COL_1 = "id";
     public static final String COL_2 = "currentdate";
     public static final String COL_3 = "amount";
 
@@ -61,8 +60,9 @@ public class mydatabase extends SQLiteOpenHelper {
         Date date = new Date(); // this object contains the current date value
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String ourdate = formatter.format(date);
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cr = db.rawQuery("Select * from " + Db_table + " where currentdate = " + ourdate, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + Db_table + " where "+ COL_2 + " = '" + ourdate + "'";
+        Cursor cr = db.rawQuery(query, null);
         if (cr.getCount() == 0) {
             // show message
             Log.i("Database cr count zero", "Zero!!!!!!!!!!!1");
@@ -74,10 +74,11 @@ public class mydatabase extends SQLiteOpenHelper {
                     String id = cr.getString(0);
                     String datestring = cr.getString(1);
                     String amountstring = cr.getString(2);
-                                        finalstring =  amountstring;
-                                        if (finalstring == null){
-                                            finalstring = "1";
-                                        }
+                    finalstring =  amountstring;
+                    if (finalstring == null){
+                        Log.i("Database related!!!","finalstring is null");
+                        finalstring = "1";
+                        }
                 }
             } catch (Exception e) {
 

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionbar">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".popup"
             android:theme="@style/popupstyle" />
@@ -23,7 +23,19 @@
         <activity
             android:name=".popup_get_amount"
             android:theme="@style/popupstyle" />
-        <activity android:name=".settings"></activity>
+        <activity android:name=".settings" />
+        <activity
+            android:name=".popup_timepicker"
+            android:theme="@style/popupstyle" />
+
+        <receiver
+            android:name=".MyReceiver_notification"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="piworks.build1.reminder" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

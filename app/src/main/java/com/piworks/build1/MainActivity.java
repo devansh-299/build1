@@ -1,5 +1,7 @@
 package com.piworks.build1;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         username_navbar =(TextView)findViewById(R.id.nav_username);
-        today_amount = (TextView)findViewById(R.id.today_amount);
+        today_amount = (TextView)findViewById(R.id.today_amount );
 
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
@@ -88,12 +90,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         username_navbar = (TextView) headerView.findViewById(R.id.nav_username);
         username_navbar.setText(username);
 
-        ////////// Database part BELOW!! /////
 
 
-        mydatabase = new mydatabase(this);
-        //today_amount.setText(mydatabase.getvalue());
 
+        ///////////////// NOtification Part!!!!//////////////////////////////
+
+
+
+
+        int minutevalue = prefs.getInt("minutevalue",0);
+        int hourvalue = prefs.getInt("hourvalue",0);
+
+        int timemillis = (hourvalue*(60*60*1000)) + (minutevalue*(60*1000));
+        Intent iN = new Intent();
+        iN.setAction("piworks.build1.reminder");
+        PendingIntent pd = PendingIntent.getBroadcast(this,1,iN,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timemillis,AlarmManager.INTERVAL_DAY,pd);
 
 
     }
@@ -144,5 +158,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void do_enter(View view) {
         startActivity(new Intent(MainActivity.this,popup_get_amount.class));
+    }
+
+
+    public String getMyData() {
+        ////////// Database part BELOW!! /////
+
+
+        mydatabase = new mydatabase(this);
+        return mydatabase.getvalue();
     }
 }
